@@ -1,0 +1,32 @@
+version: "3.2"
+
+networks:
+  http_network:
+    driver: overlay
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    external: true
+
+services:
+  traefik-custom-error-pages:
+    image: anlixhub/traefik-custom-error-pages:latest
+    depends_on:
+      - traefik
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      labels:
+        - traefik.port=80
+        - traefik.docker.network=http_network
+        - traefik.frontend.priority=1
+        - traefik.frontend.rule=HostRegexp:{catchall:.*}
+    networks:
+      http_network:
+        aliases:
+          - traefik-custom-error-pages
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"

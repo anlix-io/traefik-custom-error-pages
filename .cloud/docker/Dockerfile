@@ -10,7 +10,7 @@ FROM nginx:alpine as nginx
 
 LABEL traefik.enable="true"
 LABEL traefik.port="80"
-LABEL traefik.docker.network=http_network
+LABEL traefik.docker.network="http_network"
 LABEL traefik.frontend.priority="1"
 LABEL traefik.frontend.rule="HostRegexp:{catchall:.*}"
 
